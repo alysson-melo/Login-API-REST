@@ -5,9 +5,9 @@ const routes = require("./routes/index")
 const dbConnection = require("./infrastructure/dbConnetion")
 const tables = require("./infrastructure/tables")
 
-tables.init(dbConnection)
+routes(app, express)
 
-routes(app)
+tables.init(dbConnection)
 
 app.listen(port, (error) => {
     if (error) {

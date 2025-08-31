@@ -2,18 +2,24 @@ const { Router } = require('express')
 const router = Router()
 const loginController = require("../controllers/loginController")
 
-router.post("/users", (req, res) => {
-    const response = loginController.create()
-    res.send(response)
+router.post("/users", async (req, res) => {
+    try {
+        const newUser = req.body
+        const response = await loginController.createNewUser(newUser)
+        res.status(201).json(response)
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message || error })
+    }
 })
 
 router.get("/users", async (req, res) => {
     try {
-        const listUsers = await loginController.read()
+        const listUsers = await loginController.listAllUsers()
         res.status(200).json(listUsers)
     }
     catch (error) {
-        res.status(400).json({error: error.message || error})
+        res.status(400).json({ error: error.message || error })
     }
 })
 
