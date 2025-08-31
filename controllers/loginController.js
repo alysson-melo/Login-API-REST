@@ -1,9 +1,11 @@
+const loginModel = require("../models/loginModel")
+
 class LoginController {
     create() {
         return "Criando usuário..."
     }
     read() {
-        return "Buscando usuario..."
+        return loginModel.list()
     }
     update(id) {
         return `Atualizando usuário número ${id}...`
