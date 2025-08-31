@@ -8,4 +8,13 @@ const dbConnection = mysql.createConnection({
     database: "login_node"
 })
 
+dbConnection.connect((error) => {
+    if (error) {
+        console.log("Erro ao conectar no banco de dados...")
+        console.log(error.message)
+        return
+    }
+    console.log("Conectado ao banco de dados...")
+})
+
 module.exports = dbConnection

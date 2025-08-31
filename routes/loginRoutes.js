@@ -1,22 +1,27 @@
 const { Router } = require('express')
 const router = Router()
+const loginController = require("../controllers/loginController")
 
 router.get("/users", (req, res) => {
-    res.send("Estamos listando todos os usuários...")
+    const response = loginController.read()
+    res.send(response)
 })
 
 router.post("/users", (req, res) => {
-    res.send("Estamos criando seu usuário...")
+    const response = loginController.create()
+    res.send(response)
 })
 
 router.put("/user:id", (req, res) => {
     const { id } = req.params
-    res.send(`Estamos atualizando o usuário ${id}...`)
+    const response = loginController.update(id)
+    res.send(response)
 })
 
 router.delete("/user:id", (req, res) => {
     const { id } = req.params
-    res.send(`Estamos deletando o usuário ${id}...`)
+    const response = loginController.delete(id)
+    res.send(response)
 })
 
 module.exports = router
