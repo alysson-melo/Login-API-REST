@@ -17,8 +17,16 @@ class LoginModel {
     }
 
     createNewUser(newUser) {
+        const requiredFields = ["Nome", "NomeDeUsuario", "DataDeNascimento", "Email", "Senha"]
+        const missingFields = requiredFields.filter(field => !newUser[field] || newUser[field].toString().trim() === "")
         const sql = "INSERT INTO user SET ?"
+
         return new Promise((resolve, reject) => {
+            if (missingFields.length > 0) {
+                console.log("Erro no método createNewUser")
+                return reject(new Error(`Os seguintes campos são obrigatórios: ${missingFields.join(", ")}`))
+            }
+
             dbConnection.query(sql, newUser, (error, results) => {
                 if (error) {
                     console.log("Erro no método createNewUser")
