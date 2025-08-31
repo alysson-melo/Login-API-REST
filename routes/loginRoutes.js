@@ -5,8 +5,8 @@ const loginController = require("../controllers/loginController")
 router.post("/users", async (req, res) => {
     try {
         const newUser = req.body
-        const response = await loginController.createNewUser(newUser)
-        res.status(201).json(response)
+        const results = await loginController.createNewUser(newUser)
+        res.status(201).json(results)
     }
     catch (error) {
         res.status(400).json({ error: error.message || error })
@@ -23,16 +23,32 @@ router.get("/users", async (req, res) => {
     }
 })
 
-router.put("/user:id", (req, res) => {
-    const { id } = req.params
-    const response = loginController.update(id)
-    res.send(response)
+router.put("/users/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+        const updatedUser = req.body
+        const results = await loginController.updateUser(updatedUser, id)
+        res.status(200).json(results)
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message || error })
+    }
 })
 
-router.delete("/user:id", (req, res) => {
-    const { id } = req.params
-    const response = loginController.delete(id)
-    res.send(response)
+// SE EU DEIXO O BODY VAZIO ELE ACEITA
+// QUAL DIFERENÇA DE USAR PARMS E QUERY?
+// VERIFICAR SE OS STATUS CODES ESTÃO CORRETOS
+// PARA QUE SERVE O VERBO PATH
+
+router.delete("/users/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+        const results = await loginController.deleteUser(id)
+        res.status(200).json(results)
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message || error })
+    }
 })
 
 module.exports = router

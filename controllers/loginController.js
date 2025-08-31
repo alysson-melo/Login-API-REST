@@ -7,11 +7,11 @@ class LoginController {
     listAllUsers() {
         return loginModel.listAllUsers()
     }
-    update(id) {
-        return `Atualizando usuário número ${id}...`
+    updateUser(updatedUser, id) {
+        return loginModel.updateUser(updatedUser, id)
     }
-    delete(id) {
-        return `Deletando usuário número ${id}...`
+    deleteUser(id) {
+        return loginModel.deleteUser(id)
     }
 }
 
