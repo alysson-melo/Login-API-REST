@@ -18,6 +18,11 @@ class LoginModel {
         return this.executeQuery(sql)
     }
 
+    listUser(id) {
+        const sql = "SELECT * FROM user WHERE id = ?"
+        return this.executeQuery(sql, id)
+    }
+
     createNewUser(newUser) {
         const requiredFields = ["Nome", "NomeDeUsuario", "DataDeNascimento", "Email", "Senha", "Sexo"]
         const missingFields = requiredFields.filter(field => !newUser[field] || newUser[field].toString().trim() === "")

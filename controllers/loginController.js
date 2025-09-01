@@ -27,6 +27,17 @@ class LoginController {
         }
     }
 
+    async listUser(req, res) {
+        try {
+            const { id } = req.params
+            const results = await loginModel.listUser(id)
+            res.status(200).json(results)
+        }
+        catch (error) {
+            res.status(400).json({ error: error.message || error })
+        }
+    }
+
     async updateUser(req, res) {
         try {
             const { id } = req.params
