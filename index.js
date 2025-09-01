@@ -1,13 +1,9 @@
 const express = require("express")
 const app = express()
 const port = 3000;
-const routes = require("./routes/index")
-const dbConnection = require("./infrastructure/dbConnetion")
-const tables = require("./infrastructure/tables")
+const appCustom = require("./config/appCustom")
 
-routes(app, express)
-
-tables.init(dbConnection)
+appCustom(app, express)
 
 app.listen(port, (error) => {
     if (error) {

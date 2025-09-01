@@ -13,7 +13,7 @@ class Tables {
             DataDeNascimento DATE NOT NULL, 
             Email VARCHAR(255) NOT NULL,
             Senha VARCHAR (255) NOT NULL,
-            Sexo ENUM("Masculino", "Feminino")
+            Sexo ENUM("Masculino", "Feminino") NOT NULL
             );`
         this.dbConnection.query(sql, (error) => {
             if (error) {
