@@ -1,4 +1,5 @@
 const dbConnection = require("../infrastructure/dbConnection")
+const bcrypt = require("bcrypt")
 
 class LoginModel {
 
@@ -23,7 +24,7 @@ class LoginModel {
         return this.executeQuery(sql, id)
     }
 
-    createNewUser(newUser) {
+    async createNewUser(newUser) {
         const requiredFields = ["Nome", "NomeDeUsuario", "DataDeNascimento", "Email", "Senha", "Sexo"]
         const missingFields = requiredFields.filter(field => !newUser[field] || newUser[field].toString().trim() === "")
 
@@ -31,11 +32,21 @@ class LoginModel {
             throw new Error(`Os seguintes campos são obrigatórios: ${missingFields.join(", ")}`)
         }
 
+        const saltRounds = 10
+        const hashedPassword = await bcrypt.hash(newUser.Senha, saltRounds)
+        newUser.Senha = hashedPassword
+
         const sql = "INSERT INTO user SET ?"
         return this.executeQuery(sql, newUser)
     }
 
-    updateUser(updatedUser, id) {
+    async updateUser(updatedUser, id) {
+        if (updatedUser.Senha) {
+            const saltRounds = 10
+            const hashedPassword = await bcrypt.hash(updatedUser.Senha, saltRounds)
+            updatedUser.Senha = hashedPassword
+        }
+
         const sql = "UPDATE user SET ? WHERE id = ?"
         return this.executeQuery(sql, [updatedUser, id])
     }
