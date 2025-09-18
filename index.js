@@ -1,13 +1,9 @@
 const express = require("express")
 const app = express()
 const port = 3000;
-const appCustom = require("./config/appCustom")
+const appConfig = require("./config/appConfig")
 
-const cors = require('cors')
-
-app.use(cors())
-
-appCustom(app, express)
+appConfig(app, express)
 
 app.listen(port, (error) => {
     if (error) {

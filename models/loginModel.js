@@ -1,4 +1,4 @@
-const dbConnection = require("../infrastructure/dbConnection")
+const dbConnection = require("../config/dbConnection")
 const bcrypt = require("bcrypt")
 
 class LoginModel {
