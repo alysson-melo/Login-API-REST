@@ -7,7 +7,7 @@ module.exports = (app, express) => {
     app.use(express.json())
     app.use(express.urlencoded({ extended: true }))
 
-    routes(app, express)
+    routes(app)
 
     dbConnection.connect((error) => {
         if (error) {

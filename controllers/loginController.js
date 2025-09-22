@@ -67,6 +67,16 @@ class LoginController {
             res.status(400).json({ error: error.message || error })
         }
     }
+
+    async loginUser(req, res) {
+        try {
+            const { email, senha } = req.body
+            const results = await loginModel.loginUser(email, senha)
+            res.status(200).json(results)
+        } catch (error) {
+            res.status(401).json({ error: error.message || error })
+        }
+    }
 }
 
 module.exports = new LoginController()
