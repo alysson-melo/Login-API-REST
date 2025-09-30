@@ -12,4 +12,5 @@ app.listen(port, (error) => {
         return
     }
     console.log("Aplicação rodando...")
+    console.log(process.env.jwtSecret)
 })

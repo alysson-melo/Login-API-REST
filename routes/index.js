@@ -1,5 +1,7 @@
-const routesLogin = require("./loginRoutes")
+const userRoutes = require("./userRoutes")
+const authRoutes = require("./authRoutes")
 
 module.exports = (app) => {
-    app.use(routesLogin)
+    app.use(userRoutes)
+    app.use(authRoutes)
 }
