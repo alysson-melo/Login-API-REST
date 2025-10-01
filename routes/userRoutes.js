@@ -3,7 +3,7 @@ const authMiddleware = require("../middlewares/authMiddleware")
 const { Router } = require('express')
 const router = Router()
 
-router.post("/users", userController.createNewUser) //rota aberta
+router.post("/users", userController.createNewUser) // rota aberta
 
 router.get("/users", authMiddleware, userController.listAllUsers)
 

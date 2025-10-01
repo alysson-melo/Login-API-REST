@@ -15,7 +15,7 @@ class AuthController {
             }
 
             const users = await userModel.findUserByEmail(email)
-            if (users === 0) return res.status(401).json({ error: "Email ou senha inválidos" })
+            if (users.length === 0 || !users) return res.status(401).json({ error: "Email ou senha inválidos" })
 
             const user = users[0]
             const validPassword = await bcrypt.compare(senha, user.senha)
