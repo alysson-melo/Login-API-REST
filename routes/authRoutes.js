@@ -6,6 +6,6 @@ router.post("/login", authController.login) // rota aberta
 
 router.post("/refresh", authController.refresh)
 
-router.post("/logout", authController.logout)
+router.post("/logout", authController.logout) // rota aberta
 
 module.exports = router

@@ -21,6 +21,11 @@ class UserController {
             const IsExistingEmail = await userModel.findUserByEmail(newUser.email)
             if (IsExistingEmail.length > 0) return res.status(409).json({ error: "Este email já está em uso" })
 
+            const allowedRoles = ["admin", "user"]
+            if (!allowedRoles.includes(newUser.role)) {
+                return res.status(400).json({ error: "Role inválida. Use apenas 'admin' ou 'user'" })
+            }
+
             const saltRounds = 10
             newUser.senha = await bcrypt.hash(newUser.senha, saltRounds)
 
@@ -81,6 +86,10 @@ class UserController {
 
             const saltRounds = 10
             if (updatedUser.senha) updatedUser.senha = await bcrypt.hash(updatedUser.senha, saltRounds)
+
+            if (updatedUser.role && req.user.role !== "admin") {
+                return res.status(403).json({ error: "Somente administradores podem alterar as permissões" })
+            }
 
             const results = await userModel.updateUser(updatedUser, id)
 
