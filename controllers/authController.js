@@ -35,11 +35,11 @@ class AuthController {
             res.json({ accessToken, userWithoutPassword })
         }
         catch (error) {
-            res.status(500).json({ error: "Erro interno do servidor" })
+            res.status(400).json({ error: error.message || error })
         }
     }
 
-    async refresh(req, res) {
+    refresh(req, res) {
         try {
             const token = req.cookies.refreshToken
             if (!token) return res.status(401).json({ error: "Refresh token não fornecido" })
@@ -56,11 +56,11 @@ class AuthController {
             })
         }
         catch (error) {
-            res.status(500).json({ error: "Erro interno do servidor" })
+            res.status(400).json({ error: error.message || error })
         }
     }
 
-    async logout(req, res) {
+    logout(req, res) {
         res.clearCookie("refreshToken")
         res.json({ message: "Logout realizado com sucesso" })
     }

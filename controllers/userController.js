@@ -19,7 +19,7 @@ class UserController {
             if (validationErrors.length > 0) return res.status(400).json({ errors: validationErrors });
 
             const IsExistingEmail = await userModel.findUserByEmail(newUser.email)
-            if (IsExistingEmail > 0) return res.status(409).json({ error: "Este email já está em uso" })
+            if (IsExistingEmail.length > 0) return res.status(409).json({ error: "Este email já está em uso" })
 
             const saltRounds = 10
             newUser.senha = await bcrypt.hash(newUser.senha, saltRounds)
@@ -33,7 +33,7 @@ class UserController {
             })
         }
         catch (error) {
-            res.status(500).json({ error: "Erro interno do servidor" })
+            res.status(400).json({ error: error.message || error })
         }
     }
 
@@ -43,7 +43,7 @@ class UserController {
             res.status(200).json(users)
         }
         catch (error) {
-            res.status(500).json({ error: "Erro interno do servidor" })
+            res.status(400).json({ error: error.message || error })
         }
     }
 
@@ -62,7 +62,7 @@ class UserController {
             res.status(200).json(user[0])
         }
         catch (error) {
-            res.status(500).json({ error: "Erro interno do servidor" })
+            res.status(400).json({ error: error.message || error })
         }
     }
 
@@ -98,7 +98,7 @@ class UserController {
             })
         }
         catch (error) {
-            res.status(500).json({ error: "Erro interno do servidor" })
+            res.status(400).json({ error: error.message || error })
         }
     }
 
@@ -121,7 +121,7 @@ class UserController {
             })
         }
         catch (error) {
-            res.status(500).json({ error: "Erro interno do servidor" })
+            res.status(400).json({ error: error.message || error })
         }
     }
 }
