@@ -15,15 +15,17 @@ class UserController {
                 return res.status(400).json({ error: `Os seguintes campos são obrigatórios: ${missingFields.join(", ")}` })
             }
 
-            const validationErrors = validations.validateNewUser(newUser)
+            const validationErrors = validations.validateUser(newUser)
             if (validationErrors.length > 0) return res.status(400).json({ errors: validationErrors });
 
             const IsExistingEmail = await userModel.findUserByEmail(newUser.email)
             if (IsExistingEmail.length > 0) return res.status(409).json({ error: "Este email já está em uso" })
 
-            const allowedRoles = ["admin", "user"]
-            if (!allowedRoles.includes(newUser.role)) {
-                return res.status(400).json({ error: "Role inválida. Use apenas 'admin' ou 'user'" })
+            if (newUser.role) {
+                const allowedRoles = ["admin", "user"]
+                if (!allowedRoles.includes(newUser.role)) {
+                    return res.status(400).json({ error: "Role inválida. Use apenas 'admin' ou 'user'" })
+                }
             }
 
             const saltRounds = 10
@@ -83,6 +85,9 @@ class UserController {
 
             const existingUser = await userModel.findUserById(id)
             if (existingUser.length === 0) return res.status(404).json({ error: "Usuário não encontrado" })
+
+            const validationErrors = validations.validateUser(updatedUser)
+            if (validationErrors.length > 0) return res.status(400).json({ errors: validationErrors });
 
             const saltRounds = 10
             if (updatedUser.senha) updatedUser.senha = await bcrypt.hash(updatedUser.senha, saltRounds)

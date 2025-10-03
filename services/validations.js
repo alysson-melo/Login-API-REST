@@ -3,6 +3,7 @@ class Validations {
     passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/
     emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     userNameRegex = /^(?=.*[A-Za-zÀ-ÿ])[A-Za-zÀ-ÿ0-9\s]+$/
+    dateFormatRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/
 
     validateFullName(fullName) {
         return this.fullNameRegex.test(fullName)
@@ -21,32 +22,57 @@ class Validations {
     }
 
     validateBirthDate(birthDate) {
-        const date = new Date(birthDate)
-        const today = new Date()
-        return !isNaN(date.getTime()) && date < today
+        if (!this.dateFormatRegex.test(birthDate)) {
+            return false;
+        }
+
+        const date = new Date(birthDate);
+        const today = new Date();
+
+        if (isNaN(date.getTime()) || date >= today) {
+            return false;
+        }
+
+        const [year, month, day] = birthDate.split('-').map(Number);
+        const monthDays = new Date(year, month, 0).getDate();
+        if (day > monthDays) {
+            return false;
+        }
+
+        return true;
     }
 
-    validateNewUser(user) {
+    validateUser(user) {
         const errors = []
 
-        if (!this.validateFullName(user.nomeCompleto)) {
-            errors.push("Nome completo deve conter ao menos duas palavras com apenas letras e espaços")
+        if (user.nomeCompleto) {
+            if (!this.validateFullName(user.nomeCompleto)) {
+                errors.push("Nome completo deve conter ao menos duas palavras com apenas letras e espaços")
+            }
         }
 
-        if (!this.validateUserName(user.nomeDeUsuario)) {
-            errors.push("Nome de usuário deve conter apenas letras, números e espaços")
+        if (user.nomeDeUsuario) {
+            if (!this.validateUserName(user.nomeDeUsuario)) {
+                errors.push("Nome de usuário deve conter apenas letras, números e espaços")
+            }
         }
 
-        if (!this.validateEmail(user.email)) {
-            errors.push("Formato de email inválido")
+        if (user.email) {
+            if (!this.validateEmail(user.email)) {
+                errors.push("Formato de email inválido")
+            }
         }
 
-        if (!this.validatePassword(user.senha)) {
-            errors.push("Senha deve ter no mínimo 8 caracteres, 1 número e 1 letra maiúscula")
+        if (user.senha) {
+            if (!this.validatePassword(user.senha)) {
+                errors.push("Senha deve ter no mínimo 8 caracteres, 1 número e 1 letra maiúscula")
+            }
         }
 
-        if (!this.validateBirthDate(user.dataDeNascimento)) {
-            errors.push("Data de nascimento inválida")
+        if (user.dataDeNascimento) {
+            if (!this.validateBirthDate(user.dataDeNascimento)) {
+                errors.push("Data de nascimento deve ser válida e estar no formato YYYY-MM-DD");
+            }
         }
 
         return errors
