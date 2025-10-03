@@ -16,7 +16,7 @@ class UserController {
             }
 
             const validationErrors = validations.validateUser(newUser)
-            if (validationErrors.length > 0) return res.status(400).json({ errors: validationErrors });
+            if (validationErrors.length > 0) return res.status(400).json({ error: validationErrors });
 
             const IsExistingEmail = await userModel.findUserByEmail(newUser.email)
             if (IsExistingEmail.length > 0) return res.status(409).json({ error: "Este email já está em uso" })
